@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block main %}
+{{ super() }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <img src="{{ url_for('static',
+		filename='img/oscars.jpg') }}"
+	   class="img-rounded"
+	   width="100%">
+      <center><h2>Vote!</h2></center>
+      <form action="/poll">
+	{% for e in data.fields %}
+        <input type="radio" name="field" value="{{e}}">{{e}} <br>
+	{% endfor %}
+	<input type="submit" value="Vote" />
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock main %}
