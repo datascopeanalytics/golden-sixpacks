@@ -1,0 +1,11 @@
+.large-vertical-space {
+    padding-bottom: 30px;
+}
+
+#main {
+    min-height: 80vh;
+}
+
+footer.footer img {
+	height: 1em;
+}

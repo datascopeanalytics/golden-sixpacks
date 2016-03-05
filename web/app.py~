@@ -1,0 +1,12 @@
+import flask
+
+app = flask.Flask("Golden Sixpacks Web Interface")
+
+@app.route("/")
+def home():
+    return flask.render_template(
+        "home.html"
+    )
+
+
+

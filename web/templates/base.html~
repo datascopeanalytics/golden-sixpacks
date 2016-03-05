@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <link rel="shortcut icon" href="{{ url_for('static',
+				    filename='img/favicon.ico') }}">
+    {% block cdn_css %}
+    <link rel="stylesheet"
+	  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+    {% endblock cdn_css %}
+    
+    {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static',
+				 filename='css/base.css') }}">
+    {% endblock css %}
+  </head>
+
+  <body>
+    {% block body %}
+
+    {% block nav %}
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+	<div class="navbar-header">
+		      <h1>Data Games Registration</h1>
+	</div> <!-- .navbar-header -->
+      </div>
+    </nav>
+    {% endblock nav %}
+
+    <div id="main">
+      {% block main %}
+      {% endblock main %}
+    </div>
+
+    {% block footer %}
+    <footer class="footer">
+      <nav class="navbar navbar-default">
+	<div class="container">
+	  <div class="navbar-header">
+	    <a class="navbar-brand"
+	       href="https://www.capitalonelabs.com">
+	      <img alt="C1L logo" src="{{
+			               url_for('static',
+			               filename='img/c1l-logo.png')
+			               }}">
+	    </a>
+	  </div>
+	  
+	  <div class="navbar-header pull-right">
+	    <p class="navbar-text">
+	      design and development by
+	    </p>
+	    <a class="navbar-brand"
+	       href="http://datascopeanalytics.com">
+	      <img alt="Datascope" src="{{
+			                url_for('static',
+			                filename='img/datascope-logo.png')
+			                }}">
+	    </a>
+	  </div>
+	</div>
+      </nav>
+    </footer>
+    {% endblock footer %}
+    
+    {% block cdn_js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    {% endblock cdn_js %}
+    
+    {% block js %}
+    {% endblock js %}
+
+    {% endblock body %}
+  </body>
+
+
+</html>
+

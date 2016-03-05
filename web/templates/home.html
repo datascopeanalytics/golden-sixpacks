@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block main %}
+{{ super() }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <img src="{{ url_for('static',
+		filename='img/mothership.jpg') }}"
+	   class="img-rounded"
+	   width="100%">
+      <center><h2>This is the Mothership</h2></center>
+      <p>
+        Register for the Data Games
+        <a href="{{ url_for('register_ssh') }}">here</a>.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock main %}
