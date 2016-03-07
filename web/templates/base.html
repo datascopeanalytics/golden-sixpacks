@@ -21,6 +21,8 @@
       <div class="container-fluid">
 	<div class="navbar-header">
 		      <h1>Golden Sixpacks</h1>
+		      <span>    </span>
+		      <h1>{% block subheader %}{% endblock subheader %}</h1>
 	</div> <!-- .navbar-header -->
       </div>
     </nav>
@@ -36,16 +38,14 @@
       <nav class="navbar navbar-default">
 	<div class="container">
 	  <div class="navbar-header pull-right">
-	    <p class="navbar-text">
-	      Golden Sixpacks brought to you by
-	    </p>
-	    <a class="navbar-brand"
-	       href="http://datascopeanalytics.com">
-	      <img alt="Datascope" src="{{
-			                url_for('static',
-			                filename='img/datascope-logo.png')
-			                }}">
-	    </a>
+	    <p class="navbar-text">Golden Sixpacks brought to you by </p>
+	      <a class="navbar-brand"
+		 href="http://datascopeanalytics.com">
+		<img alt="Datascope" src="{{
+			                  url_for('static',
+			                  filename='img/datascope-logo.png')
+			                  }}">
+	      </a>
 	  </div>
 	</div>
       </nav>

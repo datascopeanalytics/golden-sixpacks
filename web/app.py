@@ -10,8 +10,10 @@ def home():
 
 
 poll_data = {
+    'award_name': 'The Collaborator',
+    'award_description': '',
     'question' : 'Who are you voting for in the category of The Collaborator?',
-    'fields'   : ['Bo', 'Irmak', 'Mike', 'Dean', 'Brian', 'Vlad', 'Mollie', 'Michael']
+    'nominees'   : ['Bo', 'Irmak', 'Mike', 'Dean', 'Brian', 'Vlad', 'Mollie', 'Michael']
     }
 
 @app.route('/vote')

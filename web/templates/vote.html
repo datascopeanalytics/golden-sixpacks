@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+
+{% block subheader %}{{data.award_name}}{% endblock subheader %}
+
 {% block main %}
 {{ super() }}
 <div class="container">
@@ -9,14 +12,34 @@
 		filename='img/oscars.jpg') }}"
 	   class="img-rounded"
 	   width="100%">
-      <center><h2>Vote!</h2></center>
-      <form action="/poll">
-	{% for e in data.fields %}
-        <input type="radio" name="field" value="{{e}}">{{e}} <br>
-	{% endfor %}
-	<input type="submit" value="Vote" />
-      </form>
+      <center><h2>{{data.award_name}}</h2></center>
+      <div class="panel panel-primary">
+	<div class="panel-heading">
+	  <h3 class="panel-title">{{data.question}}
+	  </h3>
+	</div>
+	<form action="/vote">
+	  <div class="panel-body">
+	    <ul class="list-group">
+	      {% for nominee in data.nominees %}	    
+	      <li class="list-group-item">
+		<div class="radio">
+		  <label>
+		    <input type="radio"
+			   name="{{data.award_name}}__vote"
+			   value="{{nominee}}"> {{nominee}} 
+		  </label>
+		</div>
+	      </li>
+	      {% endfor %}
+	    </ul>
+	  </div>
+	  <div class="panel-footer">
+	    <input type="submit" class="btn
+					btn-primary btn-lg"
+		   value="Vote">
+	</form>
+	</div>
+      </div>
     </div>
-  </div>
-</div>
 {% endblock main %}
