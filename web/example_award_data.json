@@ -1,0 +1,28 @@
+[
+    {
+	"id": 0,
+	"award_name": "The Collaborator",
+	"award_description": "is awesome to work with. They may have amazing brainstorming skills, they may always help right when needed, they may always be trusted to do things on their plate well, it may be tons of fun to work with them. In one or many ways, they are your favorite person to collaborate with.",
+	"question" : "Who are you voting for in the category of The Collaborator?",
+	"nominees"   : {"Bo": ["'For being awesome.' -- Dean",
+			       "'For always being there when we need a push.' -- Mike"],
+			"Irmak": ["'For not shitting his pants' -- Mike"],
+			"Mike": ["'For making me laugh all the time and making work time feel like play time all the while getting shit done.' -- Irmak",
+				"'For being always on top of the google project timing and never letting us get nervous about deadlines.' -- Vlad"],
+			"Dean": ["'For being ready to sacrifice himself when needed, by putting in extra time, by aggreing to be the bad guy to move things forward, or in many other ways' -- Bo"],
+			"Brian": ["'For being a productive and creative idea generator during any brainstorm' -- Dean"],
+			"Vlad": ["'For bringing the much needed energy and picking us up when we all feel tired' -- Brian"]
+                       }
+    },
+    {
+	"id": 1,
+	"award_name": "The Closer",
+	"award_description": "is the bringer of new clients and projects, closer of sales, signer of contracts, bringer of revenue to Datascope.",
+	"question" : "Who are you voting for in the category of The Collaborator?",
+	"nominees"   : {"Bo": ["'For bringing in a giant client and busting her ass off on many other clients, ensuring we keep signing new contracts' -- Dean"],
+			"Dean": ["'For closing deals left and right, signing so many projects.' -- Bo",
+				"'For his amazing tenacity in both getting new clients and signing new projects with existing clients.' -- Irmak"]
+                       }
+    }
+
+]
