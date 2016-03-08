@@ -6,8 +6,7 @@ import flask
 app = flask.Flask("Golden Sixpacks Web Interface")
 
 with open("award_data.json") as award_data_file:
-    vote_data = json.load(award_data_file)
-
+    award_data = json.load(award_data_file)
 
 @app.route("/")
 def home():
@@ -18,14 +17,14 @@ def home():
 @app.route('/vote/<award_id>')
 def vote(award_id):
     award_id = int(award_id)
-    if award_id >= len(vote_data):
+    if award_id >= len(award_data):
         return "DONE"
     else:
         return flask.render_template('vote.html',
-                                     data=vote_data[award_id])
+                                     data=award_data[award_id])
 
 @app.route('/save_vote')
-def poll():
+def save_vote():
     vote = request.args.get('field')
     return vote 
 
