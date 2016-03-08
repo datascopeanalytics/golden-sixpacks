@@ -24,5 +24,11 @@ famous pro-bono work)
 right when needed / trusted to do things on their plate well / fun to
 work with)
 - **The Navigator**  Major contributor to our culture and business design
-- **The Networker**  Builder of relationships
-(mentors / community / potential clients)
+
+### Running the Vote with this Little App
+You need to ask for nominations over time and record them in the
+award_data.json (not tracked) and run the app to get the votes. This
+award_data.json file contains both details about the awards and the
+nomination information. To give you an idea on the format and
+contents, an example is checked in the repo.
+
