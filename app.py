@@ -1,9 +1,10 @@
 import json
 
 import flask
-
+from flask.ext.pymongo import PyMongo
 
 app = flask.Flask("Golden Sixpacks Web Interface")
+mongo = PyMongo(app)
 
 with open("award_data.json") as award_data_file:
     award_data = json.load(award_data_file)
