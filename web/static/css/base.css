@@ -2,10 +2,19 @@
     padding-bottom: 30px;
 }
 
+.subheader {
+    color: grey;
+}
+
 #main {
     min-height: 80vh;
 }
 
 footer.footer img {
-	height: 1em;
+    	height: 3em;
+	position: absolute;
+	left: 50%;
+	margin-left: -50px !important;  /* 50% of your logo width */
+	display: block;
+	margin-top: -12px !important;
 }

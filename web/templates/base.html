@@ -20,10 +20,18 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
 	<div class="navbar-header">
-		      <h1>Golden Sixpacks</h1>
-		      <span>    </span>
-		      <h1>{% block subheader %}{% endblock subheader %}</h1>
-	</div> <!-- .navbar-header -->
+		      <h1>Golden Sixpacks <span class="subheader">
+		      {% block subheader %}{% endblock subheader %}</span></h1>
+	</div> 
+	<div class="navbar-header pull-right">
+	  <a class="navbar-brand"
+	     href="http://datascopeanalytics.com">
+	    <img alt="Datascope" src="{{
+			              url_for('static',
+			              filename='img/tiny_oscar.jpg')
+			              }}">
+	  </a>
+	</div>
       </div>
     </nav>
     {% endblock nav %}
@@ -37,15 +45,16 @@
     <footer class="footer">
       <nav class="navbar navbar-default">
 	<div class="container">
-	  <div class="navbar-header pull-right">
-	    <p class="navbar-text">Golden Sixpacks brought to you by </p>
-	      <a class="navbar-brand"
+	  <div class="navbar-header">
+	    <div class="navbar-text">
+	      <a "navbar-brand"
 		 href="http://datascopeanalytics.com">
-		<img alt="Datascope" src="{{
-			                  url_for('static',
-			                  filename='img/datascope-logo.png')
-			                  }}">
-	      </a>
+		<img alt="Datascope"
+		     src="{{
+			  url_for('static',
+			  filename='img/datascope-logo.png')
+			  }}"></a>
+	    </div>
 	  </div>
 	</div>
       </nav>
@@ -58,6 +67,8 @@
     {% endblock cdn_js %}
     
     {% block js %}
+    <script src="{{url_for('static',
+		 filename='js/vote.js')}}"></script>
     {% endblock js %}
 
     {% endblock body %}

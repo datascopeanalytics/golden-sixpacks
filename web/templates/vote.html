@@ -1,24 +1,40 @@
 {% extends "base.html" %}
 
-
-{% block subheader %}{{data.award_name}}{% endblock subheader %}
+{% block subheader %} {{data.award_name}}{% endblock subheader %}
 
 {% block main %}
 {{ super() }}
 <div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <img src="{{ url_for('static',
-		filename='img/oscars.jpg') }}"
-	   class="img-rounded"
-	   width="100%">
       <center><h2>{{data.award_name}}</h2></center>
+      <div>
+	<p> <strong>{{data.award_name}}</strong> {{data.award_description}}
+	</p>
+      </div>
+      <div class="panel panel-primary">
+	<div class="panel-heading">
+	  <h3 class="panel-title">The Nominees for {{data.award_name}} are...</h3>
+	</div>
+	  <div class="panel-body">
+	      {% for nominee, blurbs in data.nominees.iteritems() %}	    
+	      <div class="panel panel-info">
+		<div class="panel-heading">{{nominee}}</div>
+		<div class="panel-body">
+		  {% for blurb in blurbs %}
+		  <p>{{blurb}}</p>
+		  {% endfor %}
+		</div>
+	      </div>
+	      {% endfor %}
+	  </div>
+      </div>
       <div class="panel panel-primary">
 	<div class="panel-heading">
 	  <h3 class="panel-title">{{data.question}}
 	  </h3>
 	</div>
-	<form action="/vote">
+	<form action="/vote/{{data.id + 1}}">
 	  <div class="panel-body">
 	    <ul class="list-group">
 	      {% for nominee in data.nominees %}	    
@@ -35,8 +51,10 @@
 	    </ul>
 	  </div>
 	  <div class="panel-footer">
-	    <input type="submit" class="btn
-					btn-primary btn-lg"
+	    <input type="submit"
+		   disabled="disabled"
+		   class="btn
+			  btn-primary btn-lg"
 		   value="Vote">
 	</form>
 	</div>
