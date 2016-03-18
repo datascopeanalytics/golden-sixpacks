@@ -1,10 +1,17 @@
 import json
 
 import flask
-from flask.ext.pymongo import PyMongo
+
 
 app = flask.Flask("Golden Sixpacks Web Interface")
-mongo = PyMongo(app)
+app.config['DEBUG'] = True
+app.config['SECRET_KEY'] = 'super-secret'
+
+# MongoDB Config
+app.config['MONGODB_DB'] = 'mydatabase'
+app.config['MONGODB_HOST'] = 'localhost'
+app.config['MONGODB_PORT'] = 27017
+
 
 with open("award_data.json") as award_data_file:
     award_data = json.load(award_data_file)
