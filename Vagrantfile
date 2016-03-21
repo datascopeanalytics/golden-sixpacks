@@ -32,8 +32,9 @@ Vagrant.configure("2") do |config|
     vb.gui = false
     override_config.vm.box = "trusty64"
     override_config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
-    # override_config.vm.network :forwarded_port, guest: 8000, host: 8000
-    # override_config.vm.network :forwarded_port, guest: 80, host: 8080
+    override_config.vm.network :forwarded_port, guest: 8000, host: 8000
+    override_config.vm.network :forwarded_port, guest: 5000, host: 5000
+    override_config.vm.network :forwarded_port, guest: 80, host: 8080
 
     # http://stackoverflow.com/a/17126363/892506
     vb.customize ["modifyvm", :id, "--ioapic", "on"] 
