@@ -85,3 +85,7 @@ celerybeat-schedule
 
 # PROJECT SPECIFIC
 award_data.json
+
+# Fabtools Starterkit
+.vagrant
+server_config.ini
