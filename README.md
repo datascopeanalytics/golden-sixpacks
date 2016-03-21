@@ -50,5 +50,5 @@ on the virtual machine.
 * SSH to the virtual machine with `vagrant ssh FabTools_StartKit` #
 project name from config.ini
 
-* Put in any python or other unix tools you want in REQUIREMENTS or
-REQUIREMENTS-DEB
+* Put in any python or other unix tools you want in
+requirements/python or requirements/debian
