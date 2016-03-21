@@ -37,9 +37,6 @@ contents, an example is checked in the repo.
 [Fabric](http://fabric.readthedocs.org/en/latest/installation.html),
 and [fabtools](http://fabtools.readthedocs.org/en/latest/).
 
-* Change config.ini to have your project name (currently called
-fab-tools-start-kit).  Only use letters, numbers, hyphens
-
 * From the command line, run `vagrant up`. This will
 create and power up a virtual machine
 
@@ -47,8 +44,10 @@ create and power up a virtual machine
 packages
 on the virtual machine.
 
-* SSH to the virtual machine with `vagrant ssh FabTools_StartKit` #
-project name from config.ini
+* SSH to the virtual machine with `vagrant ssh golden-sixpacks`
 
-* Put in any python or other unix tools you want in
-requirements/python or requirements/debian
+* Run the flask development server with `python app.py` on the virtual
+machine
+
+* You can interact with the server on your browser at `http://localhost:5000`
+
