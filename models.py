@@ -2,7 +2,7 @@ from flask.ext.security import UserMixin, RoleMixin
 
 # This is using the Flask Application Factory pattern
 from flask.ext.mongoengine import MongoEngine
-db = MongoEngine(app)
+db = MongoEngine()
 
 class Role(db.Document, RoleMixin):
     name = db.StringField(max_length=80, unique=True)
