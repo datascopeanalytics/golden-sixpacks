@@ -1,21 +1,45 @@
 import json
-
 import flask
-
+from flask.ext.mongoengine import MongoEngine
+from flask.ext.security import (Security, MongoEngineUserDatastore,
+                                UserMixin, RoleMixin, login_required)
 
 app = flask.Flask("Golden Sixpacks Web Interface")
-app.config['DEBUG'] = True
-app.config['SECRET_KEY'] = 'super-secret'
+app.config.from_object('settings')
 
-# MongoDB Config
-app.config['MONGODB_DB'] = 'mydatabase'
-app.config['MONGODB_HOST'] = 'localhost'
-app.config['MONGODB_PORT'] = 27017
+# Create database connection object
+db = MongoEngine(app)
+
+class Role(db.Document, RoleMixin):
+    name = db.StringField(max_length=80, unique=True)
+    description = db.StringField(max_length=255)
+
+class User(db.Document, UserMixin):
+    email = db.StringField(max_length=255)
+    password = db.StringField(max_length=255)
+    name = db.StringField(max_length=255)
+    active = db.BooleanField(default=True)
+    confirmed_at = db.DateTimeField()
+    roles = db.ListField(db.ReferenceField(Role), default=[])
 
 
+# Setup Flask-Security
+user_datastore = MongoEngineUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
+
+# award data (nominations)
 with open("award_data.json") as award_data_file:
     award_data = json.load(award_data_file)
 
+
+# Create a user to test with
+@app.before_first_request
+def create_user():
+    user_datastore.create_user(email='irmak.sirer@datascopeanalytics.com',
+                               password='password',
+                               name='Irmak')
+
+    
 @app.route("/")
 def home():
     return flask.render_template(
@@ -23,6 +47,7 @@ def home():
     )
 
 @app.route('/vote/<award_id>')
+@login_required
 def vote(award_id):
     award_id = int(award_id)
     if award_id >= len(award_data):
