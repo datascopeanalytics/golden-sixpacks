@@ -1,24 +1,4 @@
-import json
-import flask
-from flask.ext.security import (Security, MongoEngineUserDatastore,
-                                UserMixin, RoleMixin, login_required)
-
-app = flask.Flask("Golden Sixpacks Web Interface")
-app.config.from_object('settings')
-
-# Create database connection object
-# This is using the Flask Application Factory pattern
-from models import db
-db.init_app(app)
-
-# Setup Flask-Security
-from models import User, Role
-user_datastore = MongoEngineUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
-
-# award data (nominations)
-with open("award_data.json") as award_data_file:
-    award_data = json.load(award_data_file)
+from goldensixpacks import app
 
 # Create a user to test with
 @app.before_first_request
@@ -58,10 +38,4 @@ def vote(award_id):
 def save_vote():
     vote = request.args.get('field')
     return vote 
-
-
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
 

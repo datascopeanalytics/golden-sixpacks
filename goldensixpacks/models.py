@@ -1,7 +1,7 @@
 from flask.ext.security import UserMixin, RoleMixin
-
-# This is using the Flask Application Factory pattern
 from flask.ext.mongoengine import MongoEngine
+
+# Initiate a database connection object
 db = MongoEngine()
 
 class Role(db.Document, RoleMixin):
