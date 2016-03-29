@@ -7,7 +7,7 @@ from goldensixpacks import app, security, user_datastore
 from goldensixpacks.models import User, Role
 
 # Award data (nominations)
-with open("data/award_data.json") as award_data_file:
+with open("award_data.json") as award_data_file:
     award_data = json.load(award_data_file)
 
 # Create a user to test with

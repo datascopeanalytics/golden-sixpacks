@@ -2,7 +2,7 @@ import flask
 from flask.ext.security import Security, MongoEngineUserDatastore
 
 # Initiate app
-app = flask.Flask("Golden Sixpacks Web Interface")
+app = flask.Flask(__name__)
 app.config.from_object('goldensixpacks.settings')
 
 # Read models and plug the database connection object into the app
