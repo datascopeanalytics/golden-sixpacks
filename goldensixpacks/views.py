@@ -1,4 +1,14 @@
-from goldensixpacks import app
+import json
+
+import flask
+from flask.ext.security import login_required
+
+from goldensixpacks import app, security, user_datastore
+from goldensixpacks.models import User, Role
+
+# Award data (nominations)
+with open("award_data.json") as award_data_file:
+    award_data = json.load(award_data_file)
 
 # Create a user to test with
 @app.before_first_request
@@ -16,7 +26,6 @@ def create_users():
     user_datastore.create_user(name='Mike',
                                password='',
                                roles=['voter'])
-
     
 @app.route("/")
 def home():
