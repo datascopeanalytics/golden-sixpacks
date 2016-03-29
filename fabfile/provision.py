@@ -66,6 +66,22 @@ def packages():
 
 @task
 @decorators.needs_environment
+def setup_mongodb():
+
+    # Install latest official MongoDB package
+    fabtools.require.deb.key('7F0CEB10', keyserver='keyserver.ubuntu.com')
+    fabtools.require.deb.source('mongodb',
+                                'http://downloads-distro.mongodb.org/repo/ubuntu-upstart',
+                                'dist',
+                                '10gen')
+    fabtools.require.deb.package('mongodb-10gen')
+    
+    # Make sure the server is started
+    fabtools.require.service.started('mongodb')
+
+    
+@task
+@decorators.needs_environment
 def setup_shell_environment():
     """setup the shell environment on the remote machine"""
 
@@ -155,6 +171,9 @@ def default(do_rsync=True):
     # install debian packages first to make sure any compiling python
     # packages have necessary dependencies
     packages()
+
+    # setup mongodb, ensure it's running
+    setup_mongodb()
 
     # set time zone
     require_timezone()
