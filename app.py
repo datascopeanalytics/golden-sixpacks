@@ -1,6 +1,5 @@
 import json
 import flask
-from flask.ext.mongoengine import MongoEngine
 from flask.ext.security import (Security, MongoEngineUserDatastore,
                                 UserMixin, RoleMixin, login_required)
 
@@ -8,22 +7,12 @@ app = flask.Flask("Golden Sixpacks Web Interface")
 app.config.from_object('settings')
 
 # Create database connection object
-db = MongoEngine(app)
-
-class Role(db.Document, RoleMixin):
-    name = db.StringField(max_length=80, unique=True)
-    description = db.StringField(max_length=255)
-
-class User(db.Document, UserMixin):
-    email = db.StringField(max_length=255)
-    password = db.StringField(max_length=255)
-    name = db.StringField(max_length=255)
-    active = db.BooleanField(default=True)
-    confirmed_at = db.DateTimeField()
-    roles = db.ListField(db.ReferenceField(Role), default=[])
-
+# This is using the Flask Application Factory pattern
+from models import db
+db.init_app(app)
 
 # Setup Flask-Security
+from models import User, Role
 user_datastore = MongoEngineUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
@@ -31,13 +20,22 @@ security = Security(app, user_datastore)
 with open("award_data.json") as award_data_file:
     award_data = json.load(award_data_file)
 
-
 # Create a user to test with
 @app.before_first_request
-def create_user():
-    user_datastore.create_user(email='irmak.sirer@datascopeanalytics.com',
-                               password='password',
-                               name='Irmak')
+def create_users():
+    user_datastore.find_or_create_role(name='admin',
+                               description='runner of golden sixpack awards')
+    user_datastore.find_or_create_role(name='voter',
+                               description='participator in golden sixpack voting')
+
+    User.objects.delete() # FRESH START!
+
+    user_datastore.create_user(name='Irmak',
+                               password='',
+                               roles=['admin', 'voter'])
+    user_datastore.create_user(name='Mike',
+                               password='',
+                               roles=['voter'])
 
     
 @app.route("/")
@@ -62,9 +60,8 @@ def save_vote():
     return vote 
 
 
+
+
 if __name__ == '__main__':
-    app.config.update(
-        DEBUG=True,
-    )
     app.run(host='0.0.0.0')
 
