@@ -44,7 +44,6 @@ class SecureAdminModelView(AdminModelView):
     
 # Add admin views
 admin.add_view(SecureAdminModelView(User))
-admin.add_view(SecureAdminModelView(Role))
 admin.add_view(SecureAdminModelView(Category))
 admin.add_view(SecureAdminModelView(Nomination))
 
@@ -61,12 +60,14 @@ def security_context_processor():
     
 # Create a user to test with
 @app.before_first_request
-def create_test_data():
+def create_initial_data():
     user_datastore.find_or_create_role(name='superuser',
-                               description='runner of golden sixpack awards')
+                       description='runner of golden sixpack awards')
+    user_datastore.find_or_create_role(name='voter',
+                       description='a peer reviewer')
 
     # Create users
-    User.objects.delete() # FRESH START!
+    User.objects.delete() # FRESH START AT APP START!
 
     user_datastore.create_user(email='datascope',
                                password='datascope',

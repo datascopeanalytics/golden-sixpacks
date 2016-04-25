@@ -5,6 +5,7 @@ from fabric.api import env, task, execute
 import utils
 import provision
 import serve
+import reset_db
 
 from fabtools.vagrant import vagrant
 
