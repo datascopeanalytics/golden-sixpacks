@@ -3,3 +3,4 @@ Fabric
 Flask
 Flask-mongoengine
 Flask-security
+Flask-admin

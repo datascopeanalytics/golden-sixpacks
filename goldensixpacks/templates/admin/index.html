@@ -1,0 +1,36 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            <h1>Golden Sixpacks Admin</h1>
+            <p class="lead">
+	      Welcome to the Bridge, Captain.
+            </p>
+            {% if not current_user.is_authenticated %}
+            <p>
+                <a class="btn btn-primary" href="{{ url_for('security.login') }}?next=admin/">Login</a> 
+            </p>
+	    <br>
+            <p>If this is your first time visiting admin (after getting
+              Golden Sixpacks up and running),<br>
+	      you can log in as a superuser with the following credentials:
+            <ul>
+                <li>username: <b>datascope</b></li>
+                <li>password: <b>datascope</b></li>
+            </ul>
+	    Remember to delete this user once you have created a
+	    superuser for yourself.
+	    </p>
+	    {% else %}
+	    <br>
+	    <h3>Current Results</h3>
+	    <p>
+	      Poopity McPoopFace is winning!
+	    </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock body %}
