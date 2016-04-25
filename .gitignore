@@ -83,6 +83,7 @@ celerybeat-schedule
 # Emacs
 *~
 \#*\#
+.\#*
 
 # PROJECT SPECIFIC
 award_data.json
