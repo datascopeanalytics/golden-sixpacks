@@ -61,18 +61,36 @@ def security_context_processor():
 # Create a user to test with
 @app.before_first_request
 def create_initial_data():
+
+    # User roles
     user_datastore.find_or_create_role(name='superuser',
                        description='runner of golden sixpack awards')
     user_datastore.find_or_create_role(name='voter',
                        description='a peer reviewer')
 
-    # Create users
-    User.objects.delete() # FRESH START AT APP START!
+    # Initial superuser
+    if not user_datastore.user_model.objects(email='datascope',
+                                             password='datascope'):
+        user_datastore.create_user(email='datascope',
+                                   password='datascope',
+                                   roles=['superuser', 'voter'])
 
-    user_datastore.create_user(email='datascope',
-                               password='datascope',
-                               roles=['superuser', 'voter'])
-    
+    # Categories
+    def ensure_category(name, desc):
+        if not Category.objects(name=name):
+            Category(name=name, description=desc).save()
+    ensure_category("The Collaborator", ("is awesome to work with. They may "
+                                      "have amazing brainstorming skills, "
+                                      "they may always help right when needed, "
+                                      "they may always be trusted to do things "
+                                      "on their plate well, it may be tons of "
+                                      "fun to work with them. In one or many "
+                                      "ways, they are your favorite person to "
+                                      "collaborate with."))
+    ensure_category("The Closer", ("is the bringer of new clients and projects, "
+                                   "closer of sales, signer of contracts, bringer "
+                                   "of revenue to Datascope."))
+        
     
 @app.route("/")
 def home():
