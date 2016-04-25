@@ -4,6 +4,7 @@ from fabric.api import env, task, execute
 # local
 import utils
 import provision
+import serve
 
 from fabtools.vagrant import vagrant
 
