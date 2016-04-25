@@ -6,18 +6,28 @@ db = MongoEngine()
 
 class Role(db.Document, RoleMixin):
     name = db.StringField(max_length=80, unique=True)
-    description = db.StringField(max_length=255)
+    description = db.StringField(max_length=None)
 
 class User(db.Document, UserMixin):
-    name = db.StringField(max_length=255)
+    email = db.StringField(max_length=255)
     password = db.StringField(max_length=255)
     active = db.BooleanField(default=True)
     confirmed_at = db.DateTimeField()
     roles = db.ListField(db.ReferenceField(Role), default=[])
 
-# class Category(db.Document)
-
+class Category(db.Document):
+    name = db.StringField(max_length=255)
+    description = db.StringField(max_length=None)
     
-# class Vote(db.Document):
-#     voter_hash = db.StringField(max_length=255)
-#     category
+class Nomination(db.Document):
+    category = db.ReferenceField(Category)
+    nominee = db.StringField(max_length=255)
+    nominator = db.StringField(max_length=255)
+    what_for = db.StringField(max_length=None)
+    
+class Vote(db.Document):
+    vote_id = db.StringField(max_length=255, unique=True)
+    voter_hash = db.StringField(max_length=255)
+    category = db.ReferenceField(Category)
+    voted_for = db.StringField(max_length=255)
+    
