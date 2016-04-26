@@ -19,7 +19,7 @@ class User(db.Document, UserMixin):
     confirmed_at = db.DateTimeField()
     roles = db.ListField(db.ReferenceField(Role), default=[])
     def __str__(self):
-        return self.username
+        return self.email
 
 class Category(db.Document):
     name = db.StringField(max_length=255)
@@ -37,12 +37,16 @@ class Nomination(db.Document):
                                     self.category,
                                     self.nominator)
 
-
+    
 class Vote(db.Document):
     vote_id = db.StringField(max_length=255, unique=True)
     voter_hash = db.StringField(max_length=255)
     category = db.ReferenceField(Category)
     voted_for = db.StringField(max_length=255)
+    def __str__(self):
+        return "%s-->%s for %s" % (self.voter_hash,
+                                    self.voted_for,
+                                    self.category)
 
 
     
