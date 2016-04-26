@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block subheader %} Participation{% endblock subheader %}
+
+{% block main %}
+{{ super() }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div id="participation">
+	<h3>Participation</h3>
+	<p>
+	  {{n_voted}} out of {{n_all}} voters cast votes.	
+	</p>
+	<div class="panel panel-primary">
+	  <div class="panel-body">
+	    {% for codename, vote_count in codename_participation %}	    
+	    <div class="drow">
+	      <div class="panel {% if vote_count %}panel-primary{% else %}panel-default{% endif %}">
+		<div class="panel-heading">{{codename}} : &nbsp;{{ vote_count }} votes</div>
+	      </div>
+	    </div>
+	    {% endfor %}
+	    
+	  </div>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main %}

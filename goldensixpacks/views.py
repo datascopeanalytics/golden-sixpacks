@@ -1,8 +1,10 @@
 import json
-from collections import defaultdict
+from collections import defaultdict, Counter
+import hashlib
+import random
 
 import flask
-from flask.ext.security import login_required
+from flask.ext.security import login_required, roles_required
 from flask_admin.contrib.mongoengine import ModelView as AdminModelView
 from flask_admin import helpers as admin_helpers
 from flask_security import current_user
@@ -44,6 +46,11 @@ admin.add_view(SecureAdminModelView(User))
 admin.add_view(SecureAdminModelView(Category))
 admin.add_view(SecureAdminModelView(Nomination))
 
+# for debug
+admin.add_view(SecureAdminModelView(Vote))
+admin.add_view(SecureAdminModelView(Role))
+
+
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
 @security.context_processor
@@ -53,9 +60,45 @@ def security_context_processor():
         admin_view=admin.index_view,
         h=admin_helpers,
     )
-    
-    
-# Create a user to test with
+
+# Helper functions
+def hash_it_baby(msg):
+    """Helper hasher to obscure usernames for votes in the database.
+    Not intended to be an unbreakable, just putting a cloudy ice-glass
+    in front, so seeing who woted for what is not as easy as one simple
+    query in the database"""
+    return hashlib.sha224(msg).hexdigest()
+
+
+def get_codename():
+    """Helper for generating a random codename to represent a voter
+    in the admin interface. To protect voting privacy of our voters,
+    we are using hashes to make it slightly more difficult to
+    reveal/infer who voted for who. On the admin interface, however,
+    instead of using a less human-friendly hash, we are representing
+    voters with randomly generated codenames, which still obscures
+    who they are but looks a bit better. The codename is always randomly
+    generated and does not stay the same like the hash, since we don't
+    need to use it to track anything.
+    """
+    codename = random.choice(['Black', 'Blue', 'Red', 'Brown', 'Gray',
+                              'Green', 'Yellow', 'Purple', 'White',
+                              'Orange', 'Pink'])
+    codename += " " + random.choice(['Mamba', 'Raptor', 'Eagle',
+                                     'Hawk', 'Sparrow', 'Snake', 'Mosquito',
+                                     'Turkey', 'Opossum', 'Narwhal',
+                                     'Seabass','Octopus', 'Jellyfish',
+                                     'Armadillo', 'Lemur', 'Tiger',
+                                     'Whale', 'Elephant','Turtle', 
+                                     'Dragon', 'Horse', 'Donkey', 'Coyote',
+                                     'Penguin', 'Fox', 'Mouse', 'Albatross',
+                                     'Mammoth', 'Tiger', 'Bear', 'Weasel'])
+    return codename
+
+
+
+# For a freshly setup Golden Sixpacks, populate the database with
+# the initial data, like superusers and default categories
 @app.before_first_request
 def create_initial_data():
 
@@ -77,13 +120,13 @@ def create_initial_data():
         if not Category.objects(name=name):
             Category(name=name, description=desc).save()
     ensure_category("The Collaborator", ("is awesome to work with. They may "
-                                      "have amazing brainstorming skills, "
-                                      "they may always help right when needed, "
-                                      "they may always be trusted to do things "
-                                      "on their plate well, it may be tons of "
-                                      "fun to work with them. In one or many "
-                                      "ways, they are your favorite person to "
-                                      "collaborate with."))
+                                         "have amazing brainstorming skills, "
+                                         "they may always help right when needed, "
+                                         "they may always be trusted to do things "
+                                         "on their plate well, it may be tons of "
+                                         "fun to work with them. In one or many "
+                                         "ways, they are your favorite person to "
+                                         "collaborate with."))
     ensure_category("The Closer", ("is the bringer of new clients and projects, "
                                    "closer of sales, signer of contracts, bringer "
                                    "of revenue to Datascope."))
@@ -98,7 +141,7 @@ def home():
 @app.route('/vote/<category_no>')
 @login_required
 def vote(category_no):
-    all_categories = list(Category.objects.order_by('name'))
+    all_categories = Category.objects.order_by('name')
     category_no = int(category_no)
     if category_no >= len(all_categories):
         return "DONE" # redirect to finished page
@@ -114,8 +157,60 @@ def vote(category_no):
                                  category=category,
                                  grouped_nominations=grouped_nominations)
 
-@app.route('/save_vote')
-def save_vote():
-    vote = request.args.get('field')
-    return vote 
+@app.route('/save-vote/<category_no>', methods=['POST'])
+@login_required
+def save_vote(category_no):
+    category_name, voted_for = flask.request.form['cast_vote'].split("|||")
+    category = Category.objects(name=category_name).first()
+    voter = current_user
+    voter_hash = hash_it_baby(voter.email)
+    vote_id = hash_it_baby('%s%s' % (voter,category))
+    vote = Vote.objects(vote_id=vote_id).first()
+    if vote:
+        vote.voter_hash=voter_hash
+        vote.category=category
+        vote.voted_for=voted_for
+    else:
+        vote = Vote(vote_id=vote_id,
+                    voter_hash=voter_hash,
+                    category=category,
+                    voted_for=voted_for)
+    vote.save()
+    next_no = str(int(category_no)+1)
+    return flask.redirect(flask.url_for('vote',
+                                        category_no=next_no),
+                          302)
+
+
+
+@app.route('/participation')
+@roles_required('superuser')
+def participation():
+    votes = Vote.objects
+    voter_participation = Counter()
+    for vote in votes:
+        voter_participation[vote.voter_hash] += 1
+    codename_participation= []
+    voter_counts = voter_participation.most_common(10000)
+    for voter, count in voter_counts:
+        codename_participation.append((get_codename(), count))
+    n_voted = len(codename_participation)
+    voter_role = Role.objects(name='voter').first()
+    all_voters = User.objects(roles = voter_role)
+    n_voters = len(all_voters)
+    for voter in range(n_voters-n_voted):
+        codename_participation.append((get_codename(), 0))
+    return flask.render_template('participation.html',
+                                 n_all = n_voters,
+                                 n_voted = n_voted,
+                                 codename_participation = codename_participation)
+
+
+@app.route('/results')
+@roles_required('superuser')
+def results():
+    return '<div id="results">Results</div>'
+
+
+                          
 
