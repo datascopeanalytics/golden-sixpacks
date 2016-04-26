@@ -1,4 +1,9 @@
 {% extends 'admin/master.html' %}
+
+{% block head_css %}
+{{ super() }}
+{% endblock %}
+
 {% block body %}
 {{ super() }}
 <div class="container">
@@ -25,12 +30,48 @@
 	    </p>
 	    {% else %}
 	    <br>
-	    <h3>Current Results</h3>
-	    <p>
-	      Poopity McPoopFace is winning!
-	    </p>
+	    <div class="row">
+	      <div class="col-md-4">
+		<div id="participation"></div>
+	      </div>
+	      <div class="col-md-1"></div>
+	      <div class="col-md-4">
+		<div id="results"></div>
+	      </div>
+	      <div class="col-md-3"></div>
             {% endif %}
         </div>
     </div>
 </div>
+
+
 {% endblock body %}
+
+{% block tail_js %}
+{{ super() }}
+  <script>
+    $.ajax({
+    url:"{{ url_for('participation') }}",
+    type:'GET',
+    success: function(data){
+    $('#participation').html($(data).find('#participation').html());
+    }
+    });
+
+//    $.ajax({
+//    url:"{{ url_for('results') }}",
+//    type:'GET',
+//    success: function(data){
+//    $('#results').html($(data).find('#results').html());
+//    }
+//    });
+
+    $.ajax({
+    url:"{{ url_for('results') }}",
+    type:'GET',
+    success: function(data){
+    $('#results').html(data);
+    }
+    });
+  </script>
+{% endblock %}
