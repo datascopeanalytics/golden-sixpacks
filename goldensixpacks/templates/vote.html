@@ -12,28 +12,36 @@
 	<p> <strong>{{category.name}}</strong> {{category.description}}
 	</p>
       </div>
-      <div class="panel panel-primary">
+    </div>
+  </div>
+  <div class="col-xs-12" style="height:20px;"></div>
+  <div class="row">
+    <div class="col-md-7">
+      <div class="panel panel-default">
 	<div class="panel-heading">
 	  <h3 class="panel-title">The Nominees for {{category.name}} are...</h3>
 	</div>
-	  <div class="panel-body">
-	      {% for nominee, nominations in grouped_nominations.iteritems() %}	    
-	      <div class="panel panel-info">
-		<div class="panel-heading">{{nominee}}</div>
-		<div class="panel-body">
-		  {% for nomination in nominations %}
-		    <p>{{nomination.what_for}} -- <i>Nominated by {{nomination.nominator}}</i></p>
-		  {% endfor %}
-		</div>
-	      </div>
+	<div class="panel-body">
+	  {% for nominee, nominations in grouped_nominations.iteritems() %}	    
+	  <div class="panel panel-info">
+	    <div class="panel-heading">{{nominee}}</div>
+	    <div class="panel-body">
+	      {% for nomination in nominations %}
+	      <p>{{nomination.what_for}} -- <i>Nominated by {{nomination.nominator}}</i></p>
 	      {% endfor %}
+	    </div>
 	  </div>
+	  {% endfor %}
+	</div>
       </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
       <div class="panel panel-primary">
 	<div class="panel-heading">
 	  <h3 class="panel-title">Who are you voting for in the category of {{category.name}}?</h3>
 	</div>
-	<form action="/save_vote/{{category_no}}">
+	<form action="/save-vote/{{category_no}}" method="post">
 	  <div class="panel-body">
 	    <ul class="list-group">
 	      {% for nominee in grouped_nominations %}	    
@@ -41,8 +49,8 @@
 		<div class="radio">
 		  <label>
 		    <input type="radio"
-			   name="{{category.name}}__vote"
-			   value="{{nominee}}"> {{nominee}} 
+			   name="cast_vote"
+			   value="{{category.name}}|||{{nominee}}"> {{nominee}} 
 		  </label>
 		</div>
 	      </li>
@@ -59,4 +67,7 @@
 	</div>
       </div>
     </div>
+  </div>
+</div>
 {% endblock main %}
+  
