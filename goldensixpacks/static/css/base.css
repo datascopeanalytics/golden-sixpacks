@@ -18,3 +18,7 @@ footer.footer img {
 	display: block;
 	margin-top: -12px !important;
 }
+
+div.user-indicator {
+    padding-top: 2.4%;
+}
