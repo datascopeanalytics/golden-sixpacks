@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 
 import flask
 from flask.ext.security import login_required
@@ -8,10 +9,6 @@ from flask_security import current_user
 
 from goldensixpacks import app, admin, security, user_datastore
 from goldensixpacks.models import User, Role, Category, Nomination, Vote
-
-# Award data (nominations)
-with open("award_data.json") as award_data_file:
-    award_data = json.load(award_data_file)
 
 # Create customized admin model view class
 class SecureAdminModelView(AdminModelView):
@@ -98,15 +95,24 @@ def home():
         "home.html"
     )
 
-@app.route('/vote/<award_id>')
+@app.route('/vote/<category_no>')
 @login_required
-def vote(award_id):
-    award_id = int(award_id)
-    if award_id >= len(award_data):
-        return "DONE"
-    else:
-        return flask.render_template('vote.html',
-                                     data=award_data[award_id])
+def vote(category_no):
+    all_categories = list(Category.objects.order_by('name'))
+    category_no = int(category_no)
+    if category_no >= len(all_categories):
+        return "DONE" # redirect to finished page
+
+    category = all_categories[category_no]
+    nominations = Nomination.objects(category=category)
+    grouped_nominations = defaultdict(list)
+    for nomination in nominations:
+        grouped_nominations[nomination.nominee].append(nomination)
+    app.logger.info(grouped_nominations)
+    return flask.render_template('vote.html',
+                                 category_no = category_no,
+                                 category=category,
+                                 grouped_nominations=grouped_nominations)
 
 @app.route('/save_vote')
 def save_vote():

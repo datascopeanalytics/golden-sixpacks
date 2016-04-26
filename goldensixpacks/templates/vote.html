@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 
-{% block subheader %} {{data.award_name}}{% endblock subheader %}
+{% block subheader %} {{category.name}}{% endblock subheader %}
 
 {% block main %}
 {{ super() }}
 <div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <center><h2>{{data.award_name}}</h2></center>
+      <center><h2>{{category.name}}</h2></center>
       <div>
-	<p> <strong>{{data.award_name}}</strong> {{data.award_description}}
+	<p> <strong>{{category.name}}</strong> {{category.description}}
 	</p>
       </div>
       <div class="panel panel-primary">
 	<div class="panel-heading">
-	  <h3 class="panel-title">The Nominees for {{data.award_name}} are...</h3>
+	  <h3 class="panel-title">The Nominees for {{category.name}} are...</h3>
 	</div>
 	  <div class="panel-body">
-	      {% for nominee, blurbs in data.nominees.iteritems() %}	    
+	      {% for nominee, nominations in grouped_nominations.iteritems() %}	    
 	      <div class="panel panel-info">
 		<div class="panel-heading">{{nominee}}</div>
 		<div class="panel-body">
-		  {% for blurb in blurbs %}
-		  <p>{{blurb}}</p>
+		  {% for nomination in nominations %}
+		    <p>{{nomination.what_for}} -- <i>Nominated by {{nomination.nominator}}</i></p>
 		  {% endfor %}
 		</div>
 	      </div>
@@ -31,18 +31,17 @@
       </div>
       <div class="panel panel-primary">
 	<div class="panel-heading">
-	  <h3 class="panel-title">{{data.question}}
-	  </h3>
+	  <h3 class="panel-title">Who are you voting for in the category of {{category.name}}?</h3>
 	</div>
-	<form action="/vote/{{data.id + 1}}">
+	<form action="/save_vote/{{category_no}}">
 	  <div class="panel-body">
 	    <ul class="list-group">
-	      {% for nominee in data.nominees %}	    
+	      {% for nominee in grouped_nominations %}	    
 	      <li class="list-group-item">
 		<div class="radio">
 		  <label>
 		    <input type="radio"
-			   name="{{data.award_name}}__vote"
+			   name="{{category.name}}__vote"
 			   value="{{nominee}}"> {{nominee}} 
 		  </label>
 		</div>
