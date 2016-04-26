@@ -28,6 +28,30 @@
 	    Remember to delete this user once you have created a
 	    superuser for yourself.
 	    </p>
+	    {% elif not current_user.has_role('superuser') %}
+	    <div class="row">
+	      <div class="col-md-8">
+		<div class="col-xs-12" style="height:20px;"></div>
+		<p>
+		  Hi there! You are not a superuser---that burden
+		  belongs to the organizer of Golden Sixpacks, the
+		  peer review role. Henceforthwidth, you are not seeing the
+		  controls for setting it up (like the entries
+		  for category definitions, nominations, etc.) All you
+		  need to worry about is <a href="/">voting</a>.
+		</p>
+		<p>
+		  If you are indeed the organizer, please log out and log
+		  back in as a superuser to make changes to the setup.
+		</p>
+		<div class="col-xs-12" style="height:20px;"></div>
+		<p>
+                  <a class="btn btn-primary" href="{{ url_for('vote',
+                  category_no=0) }}?next=admin/">Let's Vote</a> 
+		<p>
+		</p>
+	      </div>
+	    </div>
 	    {% else %}
 	    <br>
 	    <div class="row">
@@ -49,6 +73,7 @@
 
 {% block tail_js %}
 {{ super() }}
+{% if not current_user.is_authenticated %}
   <script>
     $.ajax({
     url:"{{ url_for('participation') }}",
@@ -74,4 +99,5 @@
     }
     });
   </script>
+{% endif %}
 {% endblock %}
