@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block subheader %}Results{% endblock subheader %}
+
+{% block main %}
+{{ super() }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div id="results">
+	<div class="col-md-12">
+	  <h3>Results</h3>
+	  <p>
+	    The winners in each category.
+	  </p>
+	  {% for category, tally in winners.iteritems() %}	    
+	  <div class="col-md-6">
+	    <div class="panel panel-primary">
+	      <div class="panel-heading">{{category}}</div>
+	      <div class="panel-body">
+		{% if tally %}
+  		{% for nominee, votes in tally %}	    
+		<p>
+		  <strong>{{nominee}}</strong>: {{votes}} votes
+		</p>
+		{% endfor %}
+		{% else %}
+		<p>
+		  No votes cast yet.
+		</p>
+		{% endif %}
+	      </div>
+	    </div>
+	  </div>
+	  {% endfor %}
+	</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main %}

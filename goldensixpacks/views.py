@@ -113,7 +113,7 @@ def create_initial_data():
                                              password='datascope'):
         user_datastore.create_user(email='datascope',
                                    password='datascope',
-                                   roles=['superuser', 'voter'])
+                                   roles=['superuser'])
 
     # Categories
     def ensure_category(name, desc):
@@ -209,7 +209,14 @@ def participation():
 @app.route('/results')
 @roles_required('superuser')
 def results():
-    return '<div id="results">Results</div>'
+    winners = {}
+    for category in Category.objects:
+        votes = Vote.objects(category=category)
+        tally = Counter([v.voted_for for v in votes])
+        winners[category.name] = tally.most_common(3)
+    return flask.render_template('results.html',
+                                 winners=winners)
+
 
 
                           
