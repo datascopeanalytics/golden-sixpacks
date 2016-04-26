@@ -3,13 +3,13 @@
     <link rel="shortcut icon" href="{{ url_for('static',
 				    filename='img/favicon.ico') }}">
     {% block cdn_css %}
-    <link rel="stylesheet"
-	  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
     {% endblock cdn_css %}
     
     {% block css %}
     <link rel="stylesheet" href="{{ url_for('static',
 				 filename='css/base.css') }}">
+    <link rel="stylesheet"
+	  href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     {% endblock css %}
   </head>
 
@@ -26,10 +26,10 @@
 	<div class="navbar-header pull-right">
 	  <a class="navbar-brand"
 	     href="http://datascopeanalytics.com">
-	    <img alt="Datascope" src="{{
-			              url_for('static',
-			              filename='img/tiny_oscar.jpg')
-			              }}">
+	    <img alt="Datascope" height="40" src="{{
+						url_for('static',
+						filename='img/datascope-logo.png')
+						}}">
 	  </a>
 	</div>
       </div>
