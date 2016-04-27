@@ -14,9 +14,7 @@
 	<p>
 	  Prepare to acknowledge the hell out of your coworkers. 
 	</p>
-	<a class="btn btn-primary" href="{{ url_for('vote', 
-					            category_no=0)
-					            }}">Take me to Heaven</a>
+	<a class="btn btn-primary" href="{% if current_user.is_authenticated and current_user.has_role('superuser') and not current_user.has_role('voter') %}/admin{% else %}{{ url_for('vote', category_no=0)}}{% endif %}">Take me to Heaven</a>
       </center>
     </div>
   </div>
