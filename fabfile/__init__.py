@@ -1,5 +1,5 @@
 # 3rd party
-from fabric.api import env, task, execute
+from fabric.api import env, task, execute, local, hide
 
 # local
 import utils
