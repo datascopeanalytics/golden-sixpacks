@@ -14,6 +14,7 @@
 	    The winners in each category.
 	  </p>
 	  {% for category, tally in winners.iteritems() %}	    
+	  {% if loop.index % 2 == 0 %}<div class="row">{% endif %}
 	  <div class="col-md-6">
 	    <div class="panel panel-primary">
 	      <div class="panel-heading">{{category}}</div>
@@ -21,7 +22,7 @@
 		{% if tally %}
   		{% for nominee, votes in tally %}	    
 		<p>
-		  <strong>{{nominee}}</strong>: {{votes}} votes
+		  <strong>{{nominee}}</strong>: {{votes}} vote{% if votes > 1 %}s{% endif %}
 		</p>
 		{% endfor %}
 		{% else %}
@@ -36,6 +37,7 @@
 	      </div>
 	    </div>
 	  </div>
+	  {% if loop.index % 2 == 0 %}</div>{% endif %}
 	  {% endfor %}
 	</div>
       </div>
