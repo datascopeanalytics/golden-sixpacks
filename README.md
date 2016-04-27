@@ -66,7 +66,7 @@ check the admin interface to keep track of the situation as they vote.
 
 * Once everybody votes, share the results with everyone.
 
-Currently, this app is online at [http://golden-sixpacks.datasco.pe]()
+Currently, this app is online at [http://golden-sixpacks.datasco.pe](http://golden-sixpacks.datasco.pe)
 
 
 
