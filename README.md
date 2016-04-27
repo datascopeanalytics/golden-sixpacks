@@ -15,22 +15,22 @@ as a mechanism to recognize each others' accomplishments.
 
 ### Awards
 - **The Closer**  Bringer of new clients and projects
-- **The Executer**  Getter-doner of shit (code / management / correspondence)
-- **The Rockstar**  Contributor to Datascope’s reputation (blog posts / talks /
-famous pro-bono work)
+- **The Executer**  Getter-doner of shit (code / reports / prep)
+- **The Navigator**  Major contributor to our culture and business design
+- **The Corresponder** Keeper-happy of clients, communicator, keeper-on-tracker
 - **The Professor**  Trainer of self and colleagues (analysis / code / design
 / communication)
-- **The Collaborator**  Awesome to work with (brainstorming skills / helping
-right when needed / trusted to do things on their plate well / fun to
-work with)
-- **The Navigator**  Major contributor to our culture and business design
+- **The Collaborator**  Awesome to work with (helping
+right when needed / trying to give good feedback / trusted to do things on their plate well / effort into being easy and fun to
+work with )
 
-### Running the Vote with this Little App
-You need to ask for nominations over time and record them in the
-award_data.json (not tracked) and run the app to get the votes. This
-award_data.json file contains both details about the awards and the
-nomination information. To give you an idea on the format and
-contents, an example is checked in the repo.
+
+Potentially also:
+- **The Rockstar**  Contributor to Datascope’s reputation (blog posts / talks /
+famous pro-bono work)
+- **The Networker**  Builder of relationships
+- **The Maker**  Builder of useful internal or public (non-client) tools
+
 
 ### Getting started
 * Install [Vagrant](http://vagrantup.com),
@@ -38,16 +38,31 @@ contents, an example is checked in the repo.
 and [fabtools](http://fabtools.readthedocs.org/en/latest/).
 
 * From the command line, run `vagrant up`. This will
-create and power up a virtual machine
+create and power up a virtual machine.
 
 * Run `fab dev provision`. This will install all the necessary
-packages
-on the virtual machine.
+packages on the virtual machine.
 
-* SSH to the virtual machine with `vagrant ssh golden-sixpacks`
+* Run `fab dev serve`. This will start the flask development server on the
+virtual machine.
 
-* Run the flask development server with `python app.py` on the virtual
-machine
+* You can interact with the server on your browser at `http://localhost:5000` 
+(of course, for others to vote, we need to run the server on a machine with a 
+static IP, but for now the instructions will use localhost).
 
-* You can interact with the server on your browser at `http://localhost:5000`
+* Go to `http://localhost:5000/admin`
+ 
+* Log in as the initial superuser as listed (dumbledore:hogwarts4eva).
+ 
+* Use the admin interface to create a new superuser, delete dumbledore and log back in.
+ 
+* Create the other users (voters), change the categories if need be, and add nominations.
+
+* Ask participants to give their own nominations, create those as well.
+ 
+* Send paricipants their username and password combinations, give them a deadline, and 
+check the admin interface to keep track of the situation as they vote.
+
+* Once everybody votes, share the results with everyone.
+
 
