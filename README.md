@@ -61,12 +61,12 @@ static IP, but for now the instructions will use localhost).
 
 * Ask participants to give their own nominations, create those as well.
  
-* Send paricipants their username and password combinations, give them a deadline, and 
+* Send participants their username and password combinations, give them a deadline, and 
 check the admin interface to keep track of the situation as they vote.
 
 * Once everybody votes, share the results with everyone.
 
-Currently, this app is online at [golden-sixpacks.datasco.pe]()
+Currently, this app is online at [http://golden-sixpacks.datasco.pe]()
 
 
 
