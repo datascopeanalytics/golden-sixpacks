@@ -49,7 +49,7 @@ admin.add_view(SecureAdminModelView(Category))
 admin.add_view(SecureAdminModelView(Nomination))
 
 # Only turn on for debugging
-# admin.add_view(SecureAdminModelView(Vote))
+admin.add_view(SecureAdminModelView(Vote))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
@@ -119,18 +119,52 @@ def create_initial_data():
     def ensure_category(name, desc):
         if not Category.objects(name=name):
             Category(name=name, description=desc).save()
-    ensure_category("The Collaborator", ("is awesome to work with. They may "
-                                         "have amazing brainstorming skills, "
-                                         "they may always help right when needed, "
-                                         "they may always be trusted to do things "
-                                         "on their plate well, it may be tons of "
-                                         "fun to work with them. In one or many "
-                                         "ways, they are your favorite person to "
-                                         "collaborate with."))
+            
     ensure_category("The Closer", ("is the bringer of new clients and projects, "
                                    "closer of sales, signer of contracts, bringer "
-                                   "of revenue to Datascope."))
-        
+                                   "of revenue to Datascope. The Closer goes beyond "
+                                   "the call of duty to bring in more projects. The Closer may "
+                                   "be naturally gifted at sales, or not so at all; but he/she "
+                                   "puts tons of effort into trying to sign new projects."))
+    ensure_category("The Executer", ("is the getter-doner of shit. The Executer "
+                                     "puts a lot of effort to make sure a project does "
+                                     "not fall behind, or if it is behind, the Executer brings it "
+                                     "back to life. It may be coding, it may be writing a report, "
+                                     "it may be preparing for a workshop. Whatever the "
+                                     "avenue, The Executer gets it done through high quality hard work."))
+    ensure_category("The Navigator", ("is a major contributor to our culture and business design. "
+                                      "The Navigator thinks hard on how to improve Datascope and spends "
+                                      "a lot of energy to apply these thoughts practically."))
+    ensure_category("The Corresponder", ("goes out of his/her way to keep clients informed and happy, "
+                                         "pushes hard to make sure projects stay/end on time, replies to emails "
+                                         "fast and well, keeps initiating communication, works hard to help the project teams "
+                                         "organize and fires them up, tries to put the seeds of a next/future"
+                                         "project with the clients."))
+    ensure_category("The Professor", ("is a trainer of self and colleagues. From code to statistics "
+                                      "to design to communication, the Professor makes an effort to learn new "
+                                      "things and teach their coworkers. He/she helps enhance Datascope's "
+                                      "skills and capabilities."))
+    ensure_category("The Collaborator", ("is awesome to work with. The Collaborator may always "
+                                         "offer take stuff off your plate into his/hers right when you need a break, "
+                                         "or put extra effort to be productive/constructive at brainstorms, "
+                                         "or give v. useful feedback without you having to prompt for it, "
+                                         "or may always be trusted to do things on their plate well, "
+                                         "or may motivate you with a lot of energy, or may put a lot of effort "
+                                         "to lowering your stress or boredom by cracking jokes. In one or "
+                                         "many ways, the Collaborator tries hard to make it easy and fun "
+                                         "to work with them."))
+    # Other Categories
+    # ensure_category("The Networker", ("builds relationships with future potential clients, colleagues, and the community. "
+    #                                   "The Navigator spends a lot of time arranging coffee meetings, going to "
+    #                                   "networking events, connecting with people."))
+    # ensure_category("The Rockstar", ("contributes to Datascope's reputation, by giving talks, "
+    #                                  "writing engaging blog posts, organizing meetups, making waves through "
+    #                                  "high profile pro bono work, or in any way putting a lot of "
+    #                                  "effort into expanding the image and influence of Datascope."))
+    # ensure_category("The Maker", ("builds useful internal tools that help improve Datascope, or builds "
+    #                               "public tools that align with the Datascope brand. The maker creates "
+    #                               "things that are not part of a client project but improve Datascope."))
+                    
     
 @app.route("/")
 def home():
@@ -154,7 +188,6 @@ def vote(category_no):
     grouped_nominations = defaultdict(list)
     for nomination in nominations:
         grouped_nominations[nomination.nominee].append(nomination)
-    app.logger.info(grouped_nominations)
     return flask.render_template('vote.html',
                                  category_no = category_no,
                                  category=category,
@@ -182,7 +215,6 @@ def save_vote(category_no):
     next_no = str(int(category_no)+1)
     return flask.redirect(flask.url_for('vote',
                                         category_no=next_no))
-
 
 
 @app.route('/participation')
@@ -217,13 +249,23 @@ def results():
         nominations_exist = bool(Nomination.objects(category=category).first())
         any_nominations[category.name] = nominations_exist
         votes = Vote.objects(category=category)
-        tally = Counter([v.voted_for for v in votes])
-        winners[category.name] = tally.most_common(3)
+        tally = Counter([v.voted_for for v in votes]).most_common()
+        cat_winners = []
+        if tally:
+            top_nominee, top_count = tally.pop(0)
+            cat_winners.append((top_nominee, top_count))
+        while tally:
+            next_nominee, next_count = tally.pop(0)
+            if next_count == top_count:
+                cat_winners.append((next_nominee, next_count))
+            else:
+                break
+        winners[category.name] = cat_winners
     return flask.render_template('results.html',
                                  winners=winners,
                                  any_nominations=any_nominations)
 
-@app.route('/voter_report')
+@app.route('/done')
 @roles_required('voter')
 def thank_you():
     return flask.render_template('thank_you.html')
