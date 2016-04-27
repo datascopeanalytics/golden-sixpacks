@@ -8,8 +8,9 @@ as a mechanism to recognize each others' accomplishments.
 - Like the Oscars, we have multiple categories, with one award in each
 - The categories represent the different avenues of value we bring
 - People nominate others for awards, with a short (tweet-length)
-  description of what they deserve the nomination
-- For each award, we all vote anonymously (you can't vote for yourself)
+  description of why they deserve the nomination
+- Instead of natural gifts and character traits, the idea is to focus on the amount of effort and improvement
+- For each award, we all vote anonymously (you can't nominate yourself but you can vote for yourself if nominated)
 - Winner of each award is announced
 - We divide the performance bonus pool by the number of awards, each award comes with one such unit of bonus
 
