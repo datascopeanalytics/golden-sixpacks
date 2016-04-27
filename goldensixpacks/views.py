@@ -49,7 +49,7 @@ admin.add_view(SecureAdminModelView(Category))
 admin.add_view(SecureAdminModelView(Nomination))
 
 # Only turn on for debugging
-admin.add_view(SecureAdminModelView(Vote))
+# admin.add_view(SecureAdminModelView(Vote))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
