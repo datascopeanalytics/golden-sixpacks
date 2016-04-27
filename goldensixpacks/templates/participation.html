@@ -17,7 +17,7 @@
 	    {% for codename, vote_count in codename_participation %}	    
 	    <div class="drow">
 	      <div class="panel {% if vote_count %}panel-primary{% else %}panel-default{% endif %}">
-		<div class="panel-heading">{{codename}} : &nbsp;{{ vote_count }} votes</div>
+		<div class="panel-heading">{{codename}} : &nbsp;{{ vote_count }} vote{% if vote_count > 1 %}s{% endif %}</div>
 	      </div>
 	    </div>
 	    {% endfor %}
