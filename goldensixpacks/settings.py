@@ -8,4 +8,5 @@ MONGODB_PORT = 27017
 
 # Flask-security Config
 SECURITY_REGISTERABLE = False
-
+SECURITY_PASSWORD_HASH = "plaintext"  # "sha512_crypt"
+SECURITY_PASSWORD_SALT = "MMMMM...SALTY"

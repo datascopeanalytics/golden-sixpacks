@@ -39,17 +39,17 @@ class SecureAdminModelView(AdminModelView):
                 return flask.redirect(flask.url_for('security.login',
                                                     next=flask.request.url))
             
-            
+class SecureAdminUserModelView(SecureAdminModelView):
+    column_list = ('email', 'active', 'roles')
+
     
 # Add admin views
-admin.add_view(SecureAdminModelView(User))
+admin.add_view(SecureAdminUserModelView(User))
 admin.add_view(SecureAdminModelView(Category))
 admin.add_view(SecureAdminModelView(Nomination))
 
-# for debug
-admin.add_view(SecureAdminModelView(Vote))
-admin.add_view(SecureAdminModelView(Role))
-
+# Only turn on for debugging
+# admin.add_view(SecureAdminModelView(Vote))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
@@ -109,10 +109,10 @@ def create_initial_data():
                        description='a peer reviewer')
 
     # Initial superuser
-    if not user_datastore.user_model.objects(email='datascope',
-                                             password='datascope'):
-        user_datastore.create_user(email='datascope',
-                                   password='datascope',
+    if not user_datastore.user_model.objects(email='dumbledore',
+                                             password='hogwarts4eva'):
+        user_datastore.create_user(email='dumbledore',
+                                   password='hogwarts4eva',
                                    roles=['superuser'])
 
     # Categories
