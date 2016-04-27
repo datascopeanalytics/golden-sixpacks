@@ -22,3 +22,22 @@ def dev():
     else:
         msg = "No hosts defined in the configuration file"
         raise FabricException(msg)
+
+@task
+def localhost():
+    """configure fabric to run locally"""
+    # install openssh-server and enable password-less ssh to localhost. this
+    # should make it so all of the other provisioning scripts (particularly
+    # fabtools) can work on the local copy
+    # http://stackoverflow.com/a/16651742/564709
+    with hide('everything'):
+        local('sudo apt-get install -qy openssh-server')
+        if not os.path.exists(os.path.expanduser('~/.ssh/id_rsa')):
+            local('ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa -q')
+            local('cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys')
+            local('chmod og-wx ~/.ssh/authorized_keys')
+    env.hosts = ['localhost']
+
+    # in localhost mode, remote_root is the same as the local project root
+    env.remote_root = utils.project_root()
+    
