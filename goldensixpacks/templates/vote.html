@@ -4,6 +4,27 @@
 
 {% block main %}
 {{ super() }}
+{% if not current_user.has_role('voter') %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <p>
+	Sorry, but your user does not seem to have the voter role.
+      </P>
+      <p>
+	This may be due to you accessing this voting page with a user that
+	is only a superuser and not a voter. In that case, please log out,
+	and come back with a user that has a voter role.
+      </p>
+      <p>  
+	Or it may be that you were supposed to have the voter role, but the
+	organizer of Golden Sixpacks messed up. In that case, please contact
+	the organizer.
+      </p>
+    </div>
+  </div>
+</div>
+{% else %}
 <div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
@@ -69,5 +90,6 @@
     </div>
   </div>
 </div>
+{% endif %}
 {% endblock main %}
   

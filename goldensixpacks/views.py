@@ -144,10 +144,13 @@ def vote(category_no):
     all_categories = Category.objects.order_by('name')
     category_no = int(category_no)
     if category_no >= len(all_categories):
-        return "DONE" # redirect to finished page
-
+        return flask.redirect(flask.url_for('thank_you'))
     category = all_categories[category_no]
     nominations = Nomination.objects(category=category)
+    if not nominations:
+        next_no = category_no + 1
+        return flask.redirect(flask.url_for('vote',
+                                            category_no=next_no))
     grouped_nominations = defaultdict(list)
     for nomination in nominations:
         grouped_nominations[nomination.nominee].append(nomination)
@@ -158,7 +161,7 @@ def vote(category_no):
                                  grouped_nominations=grouped_nominations)
 
 @app.route('/save-vote/<category_no>', methods=['POST'])
-@login_required
+@roles_required('voter')
 def save_vote(category_no):
     category_name, voted_for = flask.request.form['cast_vote'].split("|||")
     category = Category.objects(name=category_name).first()
@@ -178,8 +181,7 @@ def save_vote(category_no):
     vote.save()
     next_no = str(int(category_no)+1)
     return flask.redirect(flask.url_for('vote',
-                                        category_no=next_no),
-                          302)
+                                        category_no=next_no))
 
 
 
@@ -210,13 +212,21 @@ def participation():
 @roles_required('superuser')
 def results():
     winners = {}
+    any_nominations = {}
     for category in Category.objects:
+        nominations_exist = bool(Nomination.objects(category=category).first())
+        any_nominations[category.name] = nominations_exist
         votes = Vote.objects(category=category)
         tally = Counter([v.voted_for for v in votes])
         winners[category.name] = tally.most_common(3)
     return flask.render_template('results.html',
-                                 winners=winners)
+                                 winners=winners,
+                                 any_nominations=any_nominations)
 
+@app.route('/voter_report')
+@roles_required('voter')
+def thank_you():
+    return flask.render_template('thank_you.html')
 
 
                           

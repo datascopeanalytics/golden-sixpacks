@@ -26,7 +26,11 @@
 		{% endfor %}
 		{% else %}
 		<p>
+		  {% if not any_nominations[category] %}
+		  No nominations in this category.
+		  {% else %}
 		  No votes cast yet.
+		  {% endif %}
 		</p>
 		{% endif %}
 	      </div>

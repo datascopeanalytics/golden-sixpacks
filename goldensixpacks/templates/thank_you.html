@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block subheader %}Thank You{% endblock subheader %}
+
+{% block main %}
+{{ super() }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div id="results">
+	<div class="col-md-12">
+          <h1>Congratulations</h1>
+          <p class="lead">
+	    You are done. Thank you for voting.
+          </p>
+	  <div class="col-xs-12" style="height:20px;"></div>
+	  <p>
+	    You may of course overwrite your previous choices by voting again.
+	  </p>
+	  <a class="btn btn-success" href="{{ url_for('vote', 
+					   category_no=0)
+					   }}">Vote Again</a>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main %}
